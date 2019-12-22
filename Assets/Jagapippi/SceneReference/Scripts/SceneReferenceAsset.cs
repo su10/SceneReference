@@ -29,7 +29,7 @@ namespace Jagapippi.SceneReference
         public static IEnumerable<SceneReferenceAsset> FindAll()
         {
             return AssetDatabase.FindAssets($"t: {nameof(SceneReferenceAsset)}")
-                .Select(AssetDatabase.GUIDToAssetPath)
+                .Select(GUIDToAssetPath)
                 .Select(AssetDatabase.LoadAssetAtPath<SceneReferenceAsset>);
         }
 
@@ -38,12 +38,32 @@ namespace Jagapippi.SceneReference
             return FindAll().FirstOrDefault(asset => asset.path == path);
         }
 
-        private static string GUIDToScenePath(string guid)
+        public static SceneReferenceAsset CreateByScenePath(string scenePath)
         {
-            if (string.IsNullOrEmpty(guid)) return "";
+            var sceneGUID = AssetPathToGUID(scenePath);
 
+            if (string.IsNullOrEmpty(sceneGUID)) return null;
+
+            var instance = CreateInstance<SceneReferenceAsset>();
+            instance.guid = sceneGUID;
+            instance.Subscribe();
+
+            var assetPath = Regex.Replace(scenePath, @".unity$", ".asset");
+            var uniquePath = AssetDatabase.GenerateUniqueAssetPath(assetPath);
+            AssetDatabase.CreateAsset(instance, uniquePath);
+
+            return instance;
+        }
+
+        private static string GUIDToAssetPath(string guid)
+        {
             var path = AssetDatabase.GUIDToAssetPath(guid);
             return File.Exists(path) ? path : "";
+        }
+
+        private static string AssetPathToGUID(string path)
+        {
+            return File.Exists(path) ? AssetDatabase.AssetPathToGUID(path) : "";
         }
 
         private static SceneReference ScenePathToSceneReference(string path)
@@ -57,23 +77,6 @@ namespace Jagapippi.SceneReference
             }
 
             return null;
-        }
-
-        public static SceneReferenceAsset CreateByScenePath(string scenePath)
-        {
-            var sceneGUID = AssetDatabase.AssetPathToGUID(scenePath);
-
-            if (string.IsNullOrEmpty(sceneGUID)) return null;
-
-            var instance = CreateInstance<SceneReferenceAsset>();
-            instance.guid = sceneGUID;
-            instance.Subscribe();
-
-            var assetPath = Regex.Replace(scenePath, @".unity$", ".asset");
-            var uniquePath = AssetDatabase.GenerateUniqueAssetPath(assetPath);
-            AssetDatabase.CreateAsset(instance, uniquePath);
-
-            return instance;
         }
 
         #endregion
@@ -123,7 +126,7 @@ namespace Jagapippi.SceneReference
         {
             if (this == null) return;
 
-            var scenePath = GUIDToScenePath(this.guid);
+            var scenePath = GUIDToAssetPath(this.guid);
 
             if (string.IsNullOrEmpty(scenePath))
             {
