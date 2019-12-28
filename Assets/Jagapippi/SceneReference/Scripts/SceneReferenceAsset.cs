@@ -55,6 +55,13 @@ namespace Jagapippi.SceneReference
             return instance;
         }
 
+        public static SceneReferenceAsset FindOrCreate(string scenePath)
+        {
+            var asset = FindByScenePath(scenePath);
+            if (asset == null) asset = CreateByScenePath(scenePath);
+            return asset;
+        }
+
         private static string GUIDToAssetPath(string guid)
         {
             var path = AssetDatabase.GUIDToAssetPath(guid);

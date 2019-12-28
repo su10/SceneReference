@@ -21,15 +21,8 @@ namespace Jagapippi.SceneReference
             }
             else if (sceneReferenceAsset == null || sceneReferenceAsset.path != scenePath)
             {
-                property.objectReferenceValue = FindOrCreateSceneReferenceAsset(scenePath);
+                property.objectReferenceValue = SceneReferenceAsset.FindOrCreate(scenePath);
             }
-        }
-
-        private static SceneReferenceAsset FindOrCreateSceneReferenceAsset(string scenePath)
-        {
-            var asset = SceneReferenceAsset.FindByScenePath(scenePath);
-            if (asset == null) asset = SceneReferenceAsset.CreateByScenePath(scenePath);
-            return asset;
         }
     }
 }
