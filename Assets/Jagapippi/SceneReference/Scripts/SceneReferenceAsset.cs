@@ -149,7 +149,35 @@ namespace Jagapippi.SceneReference
             if (assetPath == this.path) this.Delete();
         }
 
-        private bool Delete() => AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(this));
+        private static bool allowToDelete = false;
+
+        private void Delete()
+        {
+            var path = AssetDatabase.GetAssetPath(this);
+            if (string.IsNullOrEmpty(path) || File.Exists(path) == false) return;
+
+            allowToDelete = true;
+            AssetDatabase.DeleteAsset(path);
+            allowToDelete = false;
+        }
+
+        private class AssetModificationProcessor : UnityEditor.AssetModificationProcessor
+        {
+            static AssetDeleteResult OnWillDeleteAsset(string assetPath, RemoveAssetOptions option)
+            {
+                if (assetPath.EndsWith(".asset") == false) return AssetDeleteResult.DidNotDelete;
+
+                var asset = AssetDatabase.LoadAssetAtPath<SceneReferenceAsset>(assetPath);
+
+                if (asset == null || allowToDelete)
+                {
+                    return AssetDeleteResult.DidNotDelete;
+                }
+
+                return AssetDeleteResult.FailedDelete;
+            }
+        }
+
 #endif
     }
 }
