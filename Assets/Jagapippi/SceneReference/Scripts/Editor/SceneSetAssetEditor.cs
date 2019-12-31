@@ -27,6 +27,18 @@ namespace Jagapippi.SceneReference
 
         void OnDisable()
         {
+            for (var i = 0; i < _property.arraySize; i++)
+            {
+                if (_property.GetArrayElementAtIndex(i).objectReferenceValue) continue;
+                _property.DeleteArrayElementAtIndex(i);
+                i--;
+            }
+
+            if (this.serializedObject.targetObject)
+            {
+                this.serializedObject.ApplyModifiedProperties();
+            }
+
             _property = null;
             _reorderableList = null;
         }
