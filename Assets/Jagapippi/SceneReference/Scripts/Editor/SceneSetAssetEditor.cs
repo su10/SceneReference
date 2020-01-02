@@ -80,6 +80,16 @@ namespace Jagapippi.SceneReference
                     elementProperty.objectReferenceValue = SceneReferenceAsset.FindOrCreate(selectedSceneAsset);
                 }
             };
+            reorderableList.onRemoveCallback += (list) =>
+            {
+                var count = list.serializedProperty.arraySize;
+                list.serializedProperty.DeleteArrayElementAtIndex(list.index);
+
+                if (count == list.serializedProperty.arraySize)
+                {
+                    list.serializedProperty.DeleteArrayElementAtIndex(list.index);
+                }
+            };
 
             return reorderableList;
         }
