@@ -9,6 +9,8 @@ namespace Jagapippi.SceneReference
     [CustomEditor(typeof(SceneReferenceAsset))]
     public class SceneReferenceAssetEditor : Editor
     {
+        private static readonly string WarningPrefsKey = $"{nameof(SceneReferenceAssetEditor)}/{nameof(WarningPrefsKey)}";
+
         private static readonly string HelpText =
             "This asset stores information about correspond to the scene and will be deleted simultaneously with the scene." +
             " In many cases, this asset is automatically created in necessary.\n" +
@@ -19,7 +21,20 @@ namespace Jagapippi.SceneReference
 
         public override void OnInspectorGUI()
         {
-            EditorGUILayout.HelpBox(HelpText, MessageType.Info);
+            if (EditorPrefs.GetBool(WarningPrefsKey, false) == false)
+            {
+                EditorGUILayout.HelpBox(HelpText, MessageType.Info);
+                EditorGUILayout.BeginHorizontal();
+                {
+                    GUILayout.FlexibleSpace();
+
+                    if (GUILayout.Button("Got it!"))
+                    {
+                        EditorPrefs.SetBool(WarningPrefsKey, true);
+                    }
+                }
+                EditorGUILayout.EndHorizontal();
+            }
 
             base.OnInspectorGUI();
 
