@@ -9,10 +9,18 @@ namespace Jagapippi.SceneReference
     [CustomEditor(typeof(SceneReferenceAsset))]
     public class SceneReferenceAssetEditor : Editor
     {
+        private static readonly string HelpText =
+            "This asset stores information about correspond to the scene and will be deleted simultaneously with the scene." +
+            " In many cases, this asset is automatically created in necessary.\n" +
+            "\n" +
+            "You can delete this asset manually but keep in mind that it may cause 'Missing' or 'NullReferenceException' in SceneSetAsset etc.";
+
         private const float LabelWidth = 80;
 
         public override void OnInspectorGUI()
         {
+            EditorGUILayout.HelpBox(HelpText, MessageType.Info);
+
             base.OnInspectorGUI();
 
             var sceneReference = target as ISceneReference;
