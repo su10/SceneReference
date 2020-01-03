@@ -18,8 +18,25 @@ namespace Jagapippi.SceneReference
         [InitializeOnLoadMethod]
         static void Initialize()
         {
-            if (EditorApplication.isPlayingOrWillChangePlaymode) return;
+            EditorApplication.playModeStateChanged += (mode) =>
+            {
+                switch (mode)
+                {
+                    case PlayModeStateChange.EnteredEditMode:
+                    case PlayModeStateChange.EnteredPlayMode:
+                        SubscribeAll();
+                        break;
+                }
+            };
 
+            if (EditorApplication.isPlayingOrWillChangePlaymode == false)
+            {
+                SubscribeAll();
+            }
+        }
+
+        public static void SubscribeAll()
+        {
             foreach (var instance in FindAll())
             {
                 instance.Subscribe();
