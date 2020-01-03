@@ -148,8 +148,13 @@ namespace Jagapippi.SceneReference
             }
             else
             {
-                _reference = ScenePathToSceneReference(scenePath) ?? new SceneReference(scenePath);
-                EditorUtility.SetDirty(this);
+                var newReference = ScenePathToSceneReference(scenePath) ?? new SceneReference(scenePath);
+
+                if (_reference == null || _reference.Equals(newReference) == false)
+                {
+                    _reference = newReference;
+                    EditorUtility.SetDirty(this);
+                }
             }
         }
 
