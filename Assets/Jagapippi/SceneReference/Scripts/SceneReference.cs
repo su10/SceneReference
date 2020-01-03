@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Jagapippi.SceneReference
 {
     [Serializable]
-    public class SceneReference : ISceneReference
+    public class SceneReference : ISceneReference, IEquatable<ISceneReference>
     {
         [SerializeField] private string _name = "";
         [SerializeField] private string _path = "";
@@ -37,5 +37,34 @@ namespace Jagapippi.SceneReference
             _enabled = enabled;
             _buildIndex = buildIndex;
         }
+
+        #region IEquatable
+
+        public bool Equals(ISceneReference other)
+        {
+            return _name == other.name && _path == other.path && _enabled == other.enabled && _buildIndex == other.buildIndex;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((SceneReference) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (_name != null ? _name.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_path != null ? _path.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ _enabled.GetHashCode();
+                hashCode = (hashCode * 397) ^ _buildIndex;
+                return hashCode;
+            }
+        }
+
+        #endregion
     }
 }
