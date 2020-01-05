@@ -18,6 +18,8 @@ namespace Jagapippi.SceneReference
             _property = this.serializedObject.FindProperty(PropertyName);
             _reorderableList = this.CreateReorderableList(_property);
             _lastElementControlID = EditorGUIUtility.GetControlID(FocusType.Passive);
+
+            EditorBuildSettings.sceneListChanged += this.Repaint;
         }
 
         public override void OnInspectorGUI()
@@ -30,6 +32,7 @@ namespace Jagapippi.SceneReference
 
         void OnDisable()
         {
+            EditorBuildSettings.sceneListChanged -= this.Repaint;
             RemoveNull(_reorderableList);
 
             if (this.serializedObject.targetObject)
@@ -56,27 +59,45 @@ namespace Jagapippi.SceneReference
             reorderableList.drawHeaderCallback += (rect) => EditorGUI.LabelField(rect, "Scenes");
             reorderableList.drawElementCallback = (rect, index, isActive, isFocused) =>
             {
-                rect.height = EditorGUIUtility.singleLineHeight;
-                rect.y += 1.5f;
-
                 var elementProperty = property.GetArrayElementAtIndex(index);
                 var sceneReferenceAsset = (SceneReferenceAsset) elementProperty.objectReferenceValue;
                 var currentSceneAsset = sceneReferenceAsset ? sceneReferenceAsset.FindSceneAsset() : null;
+                var objectFieldRect = new Rect(
+                    rect.x,
+                    rect.y + 1.5f,
+                    rect.width - (EditorGUIUtility.singleLineHeight + 2.0f),
+                    EditorGUIUtility.singleLineHeight
+                );
+
                 var selectedSceneAsset = (SceneAsset) EditorGUI.ObjectField(
-                    rect,
+                    objectFieldRect,
                     new GUIContent(),
                     currentSceneAsset,
                     typeof(SceneAsset),
                     allowSceneObjects: false
                 );
 
+                var sceneStatusRect = new Rect(
+                    objectFieldRect.x + objectFieldRect.width + 3.0f,
+                    rect.y + 0.75f,
+                    EditorGUIUtility.singleLineHeight,
+                    EditorGUIUtility.singleLineHeight
+                );
+
                 if (selectedSceneAsset == null)
                 {
                     elementProperty.objectReferenceValue = null;
+                    SceneStatusButton.Show(sceneStatusRect, false);
                 }
                 else if (currentSceneAsset != selectedSceneAsset)
                 {
-                    elementProperty.objectReferenceValue = SceneReferenceAsset.FindOrCreate(selectedSceneAsset);
+                    var selectedAsset = SceneReferenceAsset.FindOrCreate(selectedSceneAsset);
+                    elementProperty.objectReferenceValue = selectedAsset;
+                    SceneStatusButton.Show(sceneStatusRect, selectedAsset.enabled);
+                }
+                else
+                {
+                    SceneStatusButton.Show(sceneStatusRect, sceneReferenceAsset.enabled);
                 }
             };
             reorderableList.onAddCallback += (list) =>
@@ -134,6 +155,28 @@ namespace Jagapippi.SceneReference
 
                 property.DeleteArrayElementAtIndex(i);
                 i--;
+            }
+        }
+
+        private static class SceneStatusButton
+        {
+            private static readonly Texture EnabledIconTexture;
+            private static readonly Texture DisabledIconTexture;
+            private static readonly string EnabledTooltipText = "This Scene will be included in your build.";
+            private static readonly string DisabledTooltipText = "This Scene will NOT be included in your build.";
+            private static readonly GUIStyle Style = new GUIStyle {alignment = TextAnchor.MiddleCenter};
+
+            static SceneStatusButton()
+            {
+                DisabledIconTexture = EditorGUIUtility.IconContent("winbtn_mac_close").image;
+                EnabledIconTexture = EditorGUIUtility.IconContent("winbtn_mac_max").image;
+            }
+
+            public static bool Show(Rect rect, bool enabled)
+            {
+                var buttonTexture = enabled ? EnabledIconTexture : DisabledIconTexture;
+                var tooltipText = enabled ? EnabledTooltipText : DisabledTooltipText;
+                return GUI.Button(rect, new GUIContent(buttonTexture, tooltipText), Style);
             }
         }
     }
