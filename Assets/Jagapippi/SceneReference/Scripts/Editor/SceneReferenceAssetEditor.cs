@@ -1,5 +1,4 @@
 ﻿#if UNITY_EDITOR
-using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -52,7 +51,7 @@ namespace Jagapippi.SceneReference
             using (new GUILayout.HorizontalScope())
             {
                 GUILayout.Label("Build Settings", GUILayout.Width(LabelWidth));
-                DrawAddBuildSettingsButton(sceneReference, sceneAsset);
+                DrawAddBuildSettingsButton(sceneAsset, sceneReference);
                 DrawRemoveBuildSettingsButton(sceneReference);
                 DrawOpenBuildSettingsButton();
             }
@@ -75,29 +74,24 @@ namespace Jagapippi.SceneReference
             }
         }
 
-        private static void DrawAddBuildSettingsButton(ISceneReference sceneReference, Object sceneAsset)
+        private static void DrawAddBuildSettingsButton(Object sceneAsset, ISceneReference sceneReference)
         {
-            var scenes = EditorBuildSettings.scenes.ToList();
-
-            using (new EditorGUI.DisabledScope(sceneAsset == null || scenes.Any(scene => scene.path == sceneReference.path)))
+            using (new EditorGUI.DisabledScope(sceneAsset == null || EditorBuildSettingsHelper.Contains(sceneReference.path)))
             {
                 if (GUILayout.Button("Add"))
                 {
-                    scenes.Add(new EditorBuildSettingsScene(sceneReference.path, true));
-                    EditorBuildSettings.scenes = scenes.ToArray();
+                    EditorBuildSettingsHelper.AddScene(sceneReference.path);
                 }
             }
         }
 
         private static void DrawRemoveBuildSettingsButton(ISceneReference sceneReference)
         {
-            var scenes = EditorBuildSettings.scenes.ToList();
-
-            using (new EditorGUI.DisabledScope(scenes.All(scene => scene.path != sceneReference.path)))
+            using (new EditorGUI.DisabledScope(EditorBuildSettingsHelper.Contains(sceneReference.path) == false))
             {
                 if (GUILayout.Button("Remove"))
                 {
-                    EditorBuildSettings.scenes = scenes.Where(scene => scene.path != sceneReference.path).ToArray();
+                    EditorBuildSettingsHelper.RemoveScene(sceneReference.path);
                 }
             }
         }
@@ -106,7 +100,7 @@ namespace Jagapippi.SceneReference
         {
             if (GUILayout.Button("Open"))
             {
-                EditorApplication.ExecuteMenuItem("File/Build Settings...");
+                EditorBuildSettingsHelper.OpenWindow();
             }
         }
     }
