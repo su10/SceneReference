@@ -119,7 +119,7 @@ namespace Jagapippi.SceneReference
             private set { _guid = value; }
         }
 #endif
-        [SerializeField, ReadOnly] private SceneReference _reference = null;
+        [SerializeField] private SceneReference _reference = null;
 
         public SceneReference reference => _reference;
         public string sceneName => this.reference.name;

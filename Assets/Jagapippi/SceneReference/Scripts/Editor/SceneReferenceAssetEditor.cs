@@ -35,7 +35,11 @@ namespace Jagapippi.SceneReference
                 EditorGUILayout.EndHorizontal();
             }
 
-            base.OnInspectorGUI();
+            GUI.enabled = false;
+            {
+                base.OnInspectorGUI();
+            }
+            GUI.enabled = true;
 
             var sceneReference = target as ISceneReference;
             var sceneAsset = sceneReference.FindSceneAsset();
