@@ -44,9 +44,19 @@ namespace Jagapippi.SceneSet
             _sceneReferenceAssets.RemoveAll(asset => asset.path == scenePath);
         }
 
+        public void RemoveAt(int index)
+        {
+            _sceneReferenceAssets.RemoveAt(index);
+        }
+
         public void Clear()
         {
             _sceneReferenceAssets.Clear();
+        }
+
+        public bool Contains(SceneReferenceAsset sceneReferenceAsset)
+        {
+            return _sceneReferenceAssets.Contains(sceneReferenceAsset);
         }
 
 #if UNITY_EDITOR
