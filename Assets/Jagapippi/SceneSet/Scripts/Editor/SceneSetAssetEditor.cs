@@ -1,4 +1,5 @@
-﻿using Jagapippi.SceneReference;
+﻿#if !ODIN_INSPECTOR
+using Jagapippi.SceneReference;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
@@ -181,3 +182,4 @@ namespace Jagapippi.SceneSet
         }
     }
 }
+#endif
