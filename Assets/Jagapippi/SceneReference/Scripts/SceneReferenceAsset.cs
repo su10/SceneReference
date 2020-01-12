@@ -62,7 +62,7 @@ namespace Jagapippi.SceneReference
             if (string.IsNullOrEmpty(sceneGUID)) return null;
 
             var instance = CreateInstance<SceneReferenceAsset>();
-            instance.guid = sceneGUID;
+            instance.sceneGUID = sceneGUID;
             instance.Subscribe();
 
             var assetPath = Regex.Replace(scenePath, @".unity$", ".asset");
@@ -112,11 +112,11 @@ namespace Jagapippi.SceneReference
 
         #endregion
 
-        [SerializeField, HideInInspector] private string _guid = "";
-        public string guid
+        [SerializeField, HideInInspector] private string _sceneGUID = "";
+        public string sceneGUID
         {
-            get { return _guid; }
-            private set { _guid = value; }
+            get { return _sceneGUID; }
+            private set { _sceneGUID = value; }
         }
 #endif
         [SerializeField] private SceneReference _reference = null;
@@ -157,7 +157,7 @@ namespace Jagapippi.SceneReference
         {
             if (this == null) return;
 
-            var scenePath = GUIDToAssetPath(this.guid);
+            var scenePath = GUIDToAssetPath(this.sceneGUID);
 
             if (string.IsNullOrEmpty(scenePath))
             {
