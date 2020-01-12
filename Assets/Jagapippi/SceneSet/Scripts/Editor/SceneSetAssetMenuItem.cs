@@ -9,7 +9,7 @@ namespace Jagapippi.SceneSet
     public static class SceneSetAssetMenuItem
     {
         private const string MenuItemPath = "Assets/Create/SceneSet";
-        private static readonly string DefaultAssetName = "SceneSet.asset";
+        private static readonly string DefaultAssetName = "NewSceneSet.asset";
         private static readonly string DefaultAssetPath = $"Assets/{DefaultAssetName}";
 
         [MenuItem(MenuItemPath, true)]
