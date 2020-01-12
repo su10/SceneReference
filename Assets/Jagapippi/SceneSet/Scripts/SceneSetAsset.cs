@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using Jagapippi.SceneReference;
 using UnityEngine;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace Jagapippi.SceneSet
 {
@@ -63,23 +60,6 @@ namespace Jagapippi.SceneSet
             foreach (var path in scenePaths)
             {
                 this.Add(path);
-            }
-        }
-
-        private class AssetModificationProcessor : UnityEditor.AssetModificationProcessor
-        {
-            static string[] OnWillSaveAssets(string[] paths)
-            {
-                foreach (var path in paths)
-                {
-                    if (path.EndsWith(".asset") == false) continue;
-                    var sceneSetAsset = AssetDatabase.LoadAssetAtPath<SceneSetAsset>(path);
-                    if (sceneSetAsset == null) continue;
-
-                    sceneSetAsset.Remove((SceneReferenceAsset) null);
-                }
-
-                return paths;
             }
         }
 #endif
