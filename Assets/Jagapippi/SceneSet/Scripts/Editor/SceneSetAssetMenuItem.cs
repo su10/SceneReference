@@ -38,7 +38,7 @@ namespace Jagapippi.SceneSet
                     }
                 }
 
-                instance.AddAll(scenePaths);
+                instance.AddRange(scenePaths);
             }
 
             var assetPath = DefaultAssetPath;

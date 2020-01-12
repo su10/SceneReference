@@ -26,7 +26,7 @@ namespace Jagapippi.SceneSet
             }
         }
 
-        public void AddAll(IEnumerable<SceneReferenceAsset> sceneReferenceAssets)
+        public void AddRange(IEnumerable<SceneReferenceAsset> sceneReferenceAssets)
         {
             foreach (var asset in sceneReferenceAssets)
             {
@@ -55,7 +55,7 @@ namespace Jagapippi.SceneSet
             this.Add(SceneReferenceAsset.FindOrCreate(scenePath));
         }
 
-        public void AddAll(IEnumerable<string> scenePaths)
+        public void AddRange(IEnumerable<string> scenePaths)
         {
             foreach (var path in scenePaths)
             {
