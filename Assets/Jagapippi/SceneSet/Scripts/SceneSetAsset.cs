@@ -20,17 +20,14 @@ namespace Jagapippi.SceneSet
 
         public void Add(SceneReferenceAsset sceneReferenceAsset)
         {
-            if (_sceneReferenceAssets.Contains(sceneReferenceAsset) == false)
-            {
-                _sceneReferenceAssets.Add(sceneReferenceAsset);
-            }
+            if (sceneReferenceAsset) _sceneReferenceAssets.Add(sceneReferenceAsset);
         }
 
         public void AddRange(IEnumerable<SceneReferenceAsset> sceneReferenceAssets)
         {
             foreach (var asset in sceneReferenceAssets)
             {
-                if (asset) this.Add(asset);
+                this.Add(asset);
             }
         }
 
