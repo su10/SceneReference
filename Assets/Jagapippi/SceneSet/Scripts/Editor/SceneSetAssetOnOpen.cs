@@ -1,5 +1,4 @@
-﻿#if UNITY_EDITOR
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEditor.SceneManagement;
 
@@ -35,4 +34,3 @@ namespace Jagapippi.SceneSet
         }
     }
 }
-#endif

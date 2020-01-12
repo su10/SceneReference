@@ -1,5 +1,4 @@
-﻿#if UNITY_EDITOR
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using Jagapippi.SceneReference;
 using UnityEditor;
@@ -62,4 +61,3 @@ namespace Jagapippi.SceneSet
         }
     }
 }
-#endif
