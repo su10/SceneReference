@@ -1,9 +1,10 @@
-﻿using UnityEngine;
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
+using Jagapippi.SceneReference;
 using UnityEditor;
 using UnityEditorInternal;
+using UnityEngine;
 
-namespace Jagapippi.SceneReference
+namespace Jagapippi.SceneSet
 {
     [CustomEditor(typeof(SceneSetAsset))]
     public class SceneSetAssetEditor : Editor

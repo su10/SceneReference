@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEditor.SceneManagement;
 
-namespace Jagapippi.SceneReference
+namespace Jagapippi.SceneSet
 {
     public static class SceneSetAssetOnOpen
     {

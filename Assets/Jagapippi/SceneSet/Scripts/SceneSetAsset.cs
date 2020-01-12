@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Jagapippi.SceneReference;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-namespace Jagapippi.SceneReference
+namespace Jagapippi.SceneSet
 {
     public class SceneSetAsset : ScriptableObject, ISceneSet
     {

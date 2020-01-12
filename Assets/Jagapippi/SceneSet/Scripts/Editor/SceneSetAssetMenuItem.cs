@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿#if UNITY_EDITOR
+using System.Collections.Generic;
 using System.IO;
-#if UNITY_EDITOR
+using Jagapippi.SceneReference;
 using UnityEditor;
 using UnityEngine;
 
-namespace Jagapippi.SceneReference
+namespace Jagapippi.SceneSet
 {
     public static class SceneSetAssetMenuItem
     {
