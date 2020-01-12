@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Jagapippi.SceneSet
 {
-    [CustomEditor(typeof(SceneSetAsset))]
+    [CustomEditor(typeof(SceneSetAsset), false)]
     public class SceneSetAssetEditor : Editor
     {
         private static readonly string PropertyName = "_sceneReferenceAssets";

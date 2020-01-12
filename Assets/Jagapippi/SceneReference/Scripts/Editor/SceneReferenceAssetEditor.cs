@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Jagapippi.SceneReference
 {
-    [CustomEditor(typeof(SceneReferenceAsset))]
+    [CustomEditor(typeof(SceneReferenceAsset), false)]
     public class SceneReferenceAssetEditor : Editor
     {
         private static readonly string WarningPrefsKey = $"{nameof(SceneReferenceAssetEditor)}/{nameof(WarningPrefsKey)}";

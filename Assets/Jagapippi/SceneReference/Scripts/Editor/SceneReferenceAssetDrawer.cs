@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Jagapippi.SceneReference
 {
-    [CustomPropertyDrawer(typeof(SceneReferenceAsset))]
+    [CustomPropertyDrawer(typeof(SceneReferenceAsset), false)]
     public class SceneReferenceAssetDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
